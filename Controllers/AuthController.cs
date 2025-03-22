@@ -1,7 +1,8 @@
+namespace CatalogOnline_API.Controllers;
+
 using CatalogOnline_API.Interfaces.Repositories;
 using CatalogOnline_API.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -46,7 +47,7 @@ public class AuthController : ControllerBase
     public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
     {
         var user = await _userRepository.GetByNameAsync(request.FirstName, request.LastName);
-        if (user == null || !VerifyPassword(request.Password, user.PasswordHash))
+        if (user == null || !VerifyPassword(request.Password, user.PasswordHash!))
             return Unauthorized("Invalid credentials");
 
         var token = GenerateJwtToken(user);
@@ -57,12 +58,12 @@ public class AuthController : ControllerBase
     {
         var claims = new[]
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.NameIdentifier, user.Id!),
             new Claim("FirstName", user.FirstName ?? ""),
             new Claim("LastName", user.LastName ?? "")
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]!));
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
         var token = new JwtSecurityToken(
             claims: claims,
@@ -72,15 +73,14 @@ public class AuthController : ControllerBase
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private string HashPassword(string password)
+    private static string HashPassword(string password)
     {
-        using var sha256 = SHA256.Create();
         var bytes = Encoding.UTF8.GetBytes(password);
-        var hash = sha256.ComputeHash(bytes);
+        var hash = SHA256.HashData(bytes);
         return Convert.ToBase64String(hash);
     }
 
-    private bool VerifyPassword(string password, string hash)
+    private static bool VerifyPassword(string password, string hash)
     {
         return HashPassword(password) == hash;
     }
