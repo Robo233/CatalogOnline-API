@@ -1,11 +1,10 @@
 using CatalogOnline_API.Interfaces.Repositories;
-using CatalogOnline_API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CatalogOnline_API.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/school-classes")]
 public class SchoolClassController : ControllerBase
 {
     private readonly ISchoolClassRepository _schoolClassRepository;
