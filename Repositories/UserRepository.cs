@@ -19,4 +19,12 @@ public class UserRepository : IUserRepository
     {
         await _users.InsertOneAsync(user);
     }
+
+    public async Task<User?> GetByNameAsync(string firstName, string lastName)
+    {
+        return await _users
+            .Find(u => u.FirstName == firstName && u.LastName == lastName)
+            .FirstOrDefaultAsync();
+    }
+
 }

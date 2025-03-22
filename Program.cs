@@ -20,20 +20,32 @@ builder.Services.AddSingleton(serviceProvider =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+// Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
+
+
+
+// Swagger
+
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    var userRepo = scope.ServiceProvider.GetRequiredService<IUserRepository>();
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CatalogOnline API v1");
 
-    var user = new User
-    {
-        Id = Guid.NewGuid().ToString(),
-        FirstName = "John Doe"
-    };
+});
 
-    await userRepo.AddUserAsync(user);
-}
+
+app.UseRouting();
+
+// Authentication
+app.UseAuthentication();
+app.UseAuthorization();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -43,7 +55,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
