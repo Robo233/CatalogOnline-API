@@ -486,3 +486,5 @@ $RECYCLE.BIN/
 # Ignore build directories
 bin/
 obj/
+
+appsettings.json
