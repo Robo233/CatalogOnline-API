@@ -1,8 +1,8 @@
+namespace CatalogOnline_API.Repositories;
+
 using CatalogOnline_API.Interfaces.Repositories;
 using CatalogOnline_API.Models;
 using MongoDB.Driver;
-
-namespace CatalogOnline_API.Repositories;
 
 public class SchoolClassRepository : ISchoolClassRepository
 {

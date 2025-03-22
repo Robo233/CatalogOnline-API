@@ -1,5 +1,3 @@
-namespace CatalogOnline_API.Controllers;
-
 using CatalogOnline_API.Interfaces.Repositories;
 using CatalogOnline_API.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +7,8 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using CatalogOnline_API.Models.DTO;
+
+namespace CatalogOnline_API.Controllers;
 
 [ApiController]
 [Route("api/auth")]

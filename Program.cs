@@ -1,12 +1,10 @@
 using CatalogOnline_API.Interfaces.Repositories;
-using CatalogOnline_API.Models;
 using CatalogOnline_API.Repositories;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
 builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDb"));
@@ -26,14 +24,9 @@ builder.Services.AddScoped<ISchoolClassRepository, SchoolClassRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-
 var app = builder.Build();
 
-
-
-
 // Swagger
-
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
@@ -41,15 +34,12 @@ app.UseSwaggerUI(c =>
 
 });
 
-
 app.UseRouting();
 
 // Authentication
 app.UseAuthentication();
 app.UseAuthorization();
 
-
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
