@@ -19,11 +19,18 @@ public class StudentController : ControllerBase
     {
         var students = await _studentRepository.GetStudentsByClassIdAsync(classId);
 
-        if (students == null || students.Count == 0)
+        if (students == null || !students.Any())
         {
             return NotFound($"No students found in class with ID: {classId}");
         }
 
-        return Ok(students);
+        var studentsWithoutClassId = students.Select(s => new
+        {
+            s.Id,
+            s.FirstName,
+            s.LastName
+        }).ToList();
+
+        return Ok(studentsWithoutClassId);
     }
 }
