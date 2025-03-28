@@ -19,6 +19,8 @@ builder.Services.AddSingleton(serviceProvider =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ISchoolClassRepository, SchoolClassRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
+builder.Services.AddScoped<IScienceRepository, ScienceRepository>();
+
 
 
 

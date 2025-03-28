@@ -17,4 +17,9 @@ public class SchoolClassRepository : ISchoolClassRepository
     {
         return await _schoolClasses.Find(_ => true).ToListAsync();
     }
+
+    public async Task<SchoolClass?> GetSchoolClassByIdAsync(string id)
+    {
+        return await _schoolClasses.Find(c => c.Id == id).FirstOrDefaultAsync();
+    }
 }

@@ -18,6 +18,14 @@ public class SchoolClassController : ControllerBase
     public async Task<IActionResult> GetAllSchoolClasses()
     {
         var classes = await _schoolClassRepository.GetSchoolClassesAsync();
-        return Ok(classes);
+
+        var classesWithoutScienceIds = classes.Select(c => new
+        {
+            c.Id,
+            c.Year,
+            c.Name
+        }).ToList();
+
+        return Ok(classesWithoutScienceIds);
     }
 }
