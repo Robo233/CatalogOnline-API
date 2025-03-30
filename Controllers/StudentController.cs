@@ -19,7 +19,7 @@ public class StudentController : ControllerBase
     {
         var students = await _studentRepository.GetStudentsByClassIdAsync(classId);
 
-        if (students == null || !students.Any())
+        if (students == null || students.Count == 0)
         {
             return NotFound($"No students found in class with ID: {classId}");
         }

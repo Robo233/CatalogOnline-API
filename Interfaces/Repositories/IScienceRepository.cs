@@ -5,4 +5,6 @@ using CatalogOnline_API.Models;
 public interface IScienceRepository
 {
     Task<List<Science>> GetSciencesByIdsAsync(List<string> scienceIds);
+    Task<Science> GetScienceByIdAsync(string scienceId);
+
 }

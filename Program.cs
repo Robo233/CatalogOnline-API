@@ -20,6 +20,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ISchoolClassRepository, SchoolClassRepository>();
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IScienceRepository, ScienceRepository>();
+builder.Services.AddScoped<IGradeRepository, GradeRepository>();
 
 
 

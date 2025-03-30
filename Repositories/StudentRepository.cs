@@ -18,4 +18,9 @@ public class StudentRepository : IStudentRepository
         return await _students.Find(s => s.ClassId == classId).ToListAsync();
     }
 
+    public async Task<Student?> GetStudentByIdAsync(string id)
+    {
+        return await _students.Find(c => c.Id == id).FirstOrDefaultAsync();
+    }
+
 }

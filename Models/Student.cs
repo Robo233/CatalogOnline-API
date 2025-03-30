@@ -6,5 +6,6 @@ public class Student
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? ClassId { get; set; }
+    public List<string>? GradeIds { get; set; }
 
 }

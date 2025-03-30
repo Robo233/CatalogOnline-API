@@ -5,4 +5,5 @@ using CatalogOnline_API.Models;
 public interface IStudentRepository
 {
     Task<List<Student>> GetStudentsByClassIdAsync(string classId);
+    Task<Student?> GetStudentByIdAsync(string id);
 }
