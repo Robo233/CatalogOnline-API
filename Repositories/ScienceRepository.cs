@@ -18,4 +18,9 @@ public class ScienceRepository : IScienceRepository
         return await _sciences.Find(s => scienceIds.Contains(s.Id)).ToListAsync();
     }
 
+    public async Task<Science?> GetScienceByIdAsync(string id)
+    {
+        return await _sciences.Find(c => c.Id == id).FirstOrDefaultAsync();
+    }
+
 }
