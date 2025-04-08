@@ -1,4 +1,0 @@
-var interface_catalog_online___a_p_i_1_1_interfaces_1_1_repositories_1_1_i_grade_repository =
-[
-    [ "GetGradesByStudentAndScienceIdAsync", "interface_catalog_online___a_p_i_1_1_interfaces_1_1_repositories_1_1_i_grade_repository.html#ae98386b800818edfea829495ad12006c", null ]
-];

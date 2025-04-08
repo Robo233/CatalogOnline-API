@@ -1,34 +1,46 @@
-/// <summary>
-/// Repository for accessing and manipulating Grade data in MongoDB.
-/// </summary>
+namespace CatalogOnline_API.Repositories;
+
 using CatalogOnline_API.Interfaces.Repositories;
 using CatalogOnline_API.Models;
 using MongoDB.Driver;
+using System.Threading.Tasks;
 
 public class GradeRepository : IGradeRepository
 {
-    /// <summary>
-    /// MongoDB collection for Grade entities.
-    /// </summary>
     private readonly IMongoCollection<Grade> _grades;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="GradeRepository"/> class with the specified MongoDB database.
-    /// </summary>
-    /// <param name="database">The MongoDB database instance.</param>
     public GradeRepository(IMongoDatabase database)
     {
         _grades = database.GetCollection<Grade>("Grades");
     }
 
-    /// <summary>
-    /// Retrieves a list of grades for a specific student and science ID asynchronously.
-    /// </summary>
-    /// <param name="studentId">The student's unique ID.</param>
-    /// <param name="scienceId">The science subject's unique ID.</param>
-    /// <returns>A task that returns a list of Grade objects.</returns>
     public async Task<List<Grade>> GetGradesByStudentAndScienceIdAsync(string studentId, string scienceId)
     {
         return await _grades.Find(g => g.StudentId == studentId && g.ScienceId == scienceId).ToListAsync();
+    }
+
+    public async Task<Grade> GetGradeByIdAsync(string id)
+    {
+        return await _grades.Find(g => g.Id == id).FirstOrDefaultAsync();
+    }
+
+    public async Task UpsertGradeAsync(Grade grade)
+    {
+        if (string.IsNullOrEmpty(grade.Id))
+        {
+            grade.Id = Guid.NewGuid().ToString();
+            await _grades.InsertOneAsync(grade);
+        }
+        else
+        {
+            var filter = Builders<Grade>.Filter.Eq(g => g.Id, grade.Id);
+            await _grades.ReplaceOneAsync(filter, grade, new ReplaceOptions { IsUpsert = true });
+        }
+    }
+
+    public async Task<bool> DeleteGradeAsync(string id)
+    {
+        var result = await _grades.DeleteOneAsync(g => g.Id == id);
+        return result.DeletedCount > 0;
     }
 }

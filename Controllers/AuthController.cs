@@ -1,6 +1,3 @@
-/// <summary>
-/// API controller for handling authentication (registration and login).
-/// </summary>
 using CatalogOnline_API.Interfaces.Repositories;
 using CatalogOnline_API.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -17,32 +14,15 @@ namespace CatalogOnline_API.Controllers;
 [Route("api/auth")]
 public class AuthController : ControllerBase
 {
-    /// <summary>
-    /// Repository for performing user data operations.
-    /// </summary>
     private readonly IUserRepository _userRepository;
-
-    /// <summary>
-    /// Configuration for accessing application settings.
-    /// </summary>
     private readonly IConfiguration _configuration;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="AuthController"/> class with the specified user repository and configuration.
-    /// </summary>
-    /// <param name="userRepository">The user repository.</param>
-    /// <param name="configuration">The application configuration.</param>
     public AuthController(IUserRepository userRepository, IConfiguration configuration)
     {
         _userRepository = userRepository;
         _configuration = configuration;
     }
 
-    /// <summary>
-    /// Registers a new user and returns a JWT token.
-    /// </summary>
-    /// <param name="request">The registration request containing user details.</param>
-    /// <returns>An IActionResult containing the JWT token or a BadRequest if the user already exists.</returns>
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRegisterRequest request)
     {
@@ -63,11 +43,6 @@ public class AuthController : ControllerBase
         return Ok(new { token });
     }
 
-    /// <summary>
-    /// Authenticates a user and returns a JWT token.
-    /// </summary>
-    /// <param name="request">The login request containing user credentials.</param>
-    /// <returns>An IActionResult containing the JWT token or Unauthorized if credentials are invalid.</returns>
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginRequest request)
     {
@@ -79,11 +54,6 @@ public class AuthController : ControllerBase
         return Ok(new { token });
     }
 
-    /// <summary>
-    /// Generates a JWT token for the authenticated user.
-    /// </summary>
-    /// <param name="user">The authenticated user.</param>
-    /// <returns>The generated JWT token as a string.</returns>
     private string GenerateJwtToken(User user)
     {
         var claims = new[]
@@ -103,11 +73,6 @@ public class AuthController : ControllerBase
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    /// <summary>
-    /// Hashes the provided password using SHA256.
-    /// </summary>
-    /// <param name="password">The plain text password to hash.</param>
-    /// <returns>The hashed password as a Base64 string.</returns>
     private static string HashPassword(string password)
     {
         var bytes = Encoding.UTF8.GetBytes(password);
@@ -115,12 +80,6 @@ public class AuthController : ControllerBase
         return Convert.ToBase64String(hash);
     }
 
-    /// <summary>
-    /// Verifies whether the provided password matches the hashed password.
-    /// </summary>
-    /// <param name="password">The plain text password to verify.</param>
-    /// <param name="hash">The hashed password for comparison.</param>
-    /// <returns>True if the password matches the hash; otherwise, false.</returns>
     private static bool VerifyPassword(string password, string hash)
     {
         return HashPassword(password) == hash;
