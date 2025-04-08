@@ -1,7 +1,8 @@
+/// <summary>
+/// API controller for handling grade-related requests.
+/// </summary>
 using CatalogOnline_API.Interfaces.Repositories;
-using CatalogOnline_API.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 
 namespace CatalogOnline_API.Controllers;
 
@@ -9,26 +10,53 @@ namespace CatalogOnline_API.Controllers;
 [Route("api/school-classes")]
 public class GradesController : ControllerBase
 {
+    /// <summary>
+    /// Repository for performing student data operations.
+    /// </summary>
+    private readonly IStudentRepository _studentRepository;
+
+    /// <summary>
+    /// Repository for performing grade data operations.
+    /// </summary>
     private readonly IGradeRepository _gradeRepository;
+
+    /// <summary>
+    /// Repository for performing science data operations.
+    /// </summary>
     private readonly IScienceRepository _scienceRepository;
 
-    public GradesController(IGradeRepository gradeRepository, IScienceRepository scienceRepository)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GradesController"/> class with the specified repositories.
+    /// </summary>
+    /// <param name="studentRepository">The student repository.</param>
+    /// <param name="gradeRepository">The grade repository.</param>
+    /// <param name="scienceRepository">The science repository.</param>
+    public GradesController(IStudentRepository studentRepository, IGradeRepository gradeRepository, IScienceRepository scienceRepository)
     {
+        _studentRepository = studentRepository;
         _gradeRepository = gradeRepository;
         _scienceRepository = scienceRepository;
     }
 
+    /// <summary>
+    /// Retrieves grades for a specific student and science subject.
+    /// </summary>
+    /// <param name="studentId">The student's unique ID.</param>
+    /// <param name="scienceId">The science subject's unique ID.</param>
+    /// <returns>An IActionResult containing the list of grades or a NotFound result if none are found.</returns>
     [HttpGet("grades/{studentId}/{scienceId}")]
-    [AllowAnonymous]
     public async Task<IActionResult> GetGradesByStudentAndScienceId(string studentId, string scienceId)
     {
         var grades = await _gradeRepository.GetGradesByStudentAndScienceIdAsync(studentId, scienceId);
+
         if (grades == null || grades.Count == 0)
         {
             return NotFound($"No grades found with student id: {studentId} and science id: {scienceId}");
         }
+
         var science = await _scienceRepository.GetScienceByIdAsync(scienceId);
         var scienceName = science?.Name;
+
         var gradesWithScienceName = grades.Select(g => new
         {
             g.Id,
@@ -36,42 +64,7 @@ public class GradesController : ControllerBase
             g.Date,
             g.GradeValue
         }).ToList();
+
         return Ok(gradesWithScienceName);
-    }
-
-    [HttpGet("grades/{id}")]
-    [Authorize]
-    public async Task<IActionResult> GetGradeById(string id)
-    {
-        var grade = await _gradeRepository.GetGradeByIdAsync(id);
-        if (grade == null)
-        {
-            return NotFound($"Grade with id: {id} not found.");
-        }
-        return Ok(new { grade.Date, grade.GradeValue });
-    }
-
-    [HttpPost("grades")]
-    [Authorize]
-    public async Task<IActionResult> UpsertGrade([FromBody] Grade grade)
-    {
-        if (grade == null)
-        {
-            return BadRequest("Grade data is required.");
-        }
-        await _gradeRepository.UpsertGradeAsync(grade);
-        return Ok("Grade upserted successfully.");
-    }
-
-    [HttpDelete("grades/{id}")]
-    [Authorize]
-    public async Task<IActionResult> DeleteGrade(string id)
-    {
-        var result = await _gradeRepository.DeleteGradeAsync(id);
-        if (!result)
-        {
-            return NotFound($"Grade with id: {id} not found.");
-        }
-        return Ok("Grade deleted successfully.");
     }
 }

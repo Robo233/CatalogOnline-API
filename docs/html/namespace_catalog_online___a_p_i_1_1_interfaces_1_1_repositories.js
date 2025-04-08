@@ -1,0 +1,8 @@
+var namespace_catalog_online___a_p_i_1_1_interfaces_1_1_repositories =
+[
+    [ "IGradeRepository", "interface_catalog_online___a_p_i_1_1_interfaces_1_1_repositories_1_1_i_grade_repository.html", "interface_catalog_online___a_p_i_1_1_interfaces_1_1_repositories_1_1_i_grade_repository" ],
+    [ "ISchoolClassRepository", "interface_catalog_online___a_p_i_1_1_interfaces_1_1_repositories_1_1_i_school_class_repository.html", "interface_catalog_online___a_p_i_1_1_interfaces_1_1_repositories_1_1_i_school_class_repository" ],
+    [ "IScienceRepository", "interface_catalog_online___a_p_i_1_1_interfaces_1_1_repositories_1_1_i_science_repository.html", "interface_catalog_online___a_p_i_1_1_interfaces_1_1_repositories_1_1_i_science_repository" ],
+    [ "IStudentRepository", "interface_catalog_online___a_p_i_1_1_interfaces_1_1_repositories_1_1_i_student_repository.html", "interface_catalog_online___a_p_i_1_1_interfaces_1_1_repositories_1_1_i_student_repository" ],
+    [ "IUserRepository", "interface_catalog_online___a_p_i_1_1_interfaces_1_1_repositories_1_1_i_user_repository.html", "interface_catalog_online___a_p_i_1_1_interfaces_1_1_repositories_1_1_i_user_repository" ]
+];
