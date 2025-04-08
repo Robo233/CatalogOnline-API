@@ -2,7 +2,6 @@
 /// Represents a science subject in the CatalogOnline system.
 /// </summary>
 namespace CatalogOnline_API.Models;
-
 public class Science
 {
     /// <summary>
